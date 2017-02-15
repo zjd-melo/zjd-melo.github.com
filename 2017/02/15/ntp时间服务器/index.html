@@ -454,7 +454,7 @@ date -s &quot;dd/mm/yyyy hh:mm:ss&quot;   修改系统时间
 </ul>
 <h3 id="NTP-Server原理"><a href="#NTP-Server原理" class="headerlink" title="NTP Server原理"></a><font color="green">NTP Server原理</font></h3><p>所有服务器归入不同的Stratum（层）中。Stratum-1在顶层，有外部UTC接入，而Stratum-2则从Stratum-1获取时间，Stratum-3从Stratum-2获取时间，以此类推，但Stratum层的总数限制在15以内。所有这些服务器在逻辑上形成阶梯式的架构相互连接，而Stratum-1的时间服务器是整个系统的基础，也是顶端!  </p>
 <p><img src="http://i.imgur.com/OPV2fuE.png" alt=""></p>
-<p>ntp服务器在启动之前要手动同步一下时间，现有一台设备，系统时间是 13:00 , 真实的当前时间(在空中，也许卫星上，这里假设是在准备同步的上级目标NTP服务器)是: 12:30  。如果我们使用ntpdate同步（ntpdate -u 目标NTP服务器IP），操作系统的时间立即更新为12:30,假如，我们的系统有一个定时应用，是在每天12:40运行，那么实际今天这个的任务已经运行过了（当前时间是13:00嘛），现在被ntpdate修改为12:30，那么意味作10分钟后，又会执行一次任务，这就糟糕了，这个任务只能执行一次的嘛！！我想你（其实是我）已经懂了ntpdate时间同步的隐患，当然这个例子有些极端，但的确是有风险的，生产环境我不打算这么干，还是稳妥点好。所以解决该问题的办法就是时间平滑更改，不会让一个时间点在一天内经历两次，这就是NTPD服务方式平滑同步时间，它每次同步时间的偏移量不会太陡，是慢慢来的（问：怎么来，没有细究，只晓得一次一点的同步，完全同步好需要较长时间，所以一般开启NTPD服务同步前先用ntpdate先手动同步一次）  </p>
+<p>ntp服务器在启动之前要手动同步一下时间，现有一台设备，系统时间是 13:00 , 真实的当前时间(在空中，也许卫星上，这里假设是在准备同步的上级目标NTP服务器)是: 12:30  。如果我们使用ntpdate同步（ntpdate -u 目标NTP服务器IP），操作系统的时间立即更新为12:30,假如，我们的系统有一个定时应用，是在每天12:40运行，那么实际今天这个的任务已经运行过了（当前时间是13:00嘛），现在被ntpdate修改为12:30，那么意味作10分钟后，又会执行一次任务，这个任务只能执行一次的嘛！！我想你已经懂了ntpdate时间同步的隐患，当然这个例子有些极端，但的确是有风险的，生产环境不打算这么干，还是稳妥点好。所以解决该问题的办法就是时间平滑更改，不会让一个时间点在一天内经历两次，这就是NTPD服务方式平滑同步时间，它每次同步时间的偏移量不会太陡，是慢慢来的（问：怎么来，没有细究，只晓得一次一点的同步，完全同步好需要较长时间，所以一般开启NTPD服务同步前先用ntpdate先手动同步一次）  </p>
 <p>错误1：ntpdate -u ip -&gt;  no server suitable for synchronization found</p>
 <p>判断：在ntp客户端用ntpdate –d serverIP查看，发现有“Server dropped: strata too high”的错误，并且显示“stratum 16”。而正常情况下stratum这个值得范围是“0~15”。</p>
 <p>原因：NTP server还没有和其自身或者它的server同步上。在ntp server上重新启动ntp服务后，ntp server自身或者与其server的同步的需要一个时间段，这个过程可能是5分钟，在这个时间之内在客户端运行ntpdate命令时会产生no server suitable for synchronization found的错误。</p>
@@ -484,10 +484,10 @@ date -s &quot;dd/mm/yyyy hh:mm:ss&quot;   修改系统时间
 <p>第一个问题不难理解,因为NTP提供给我们的是一个cluster server所以每次连接的得到的服务器都有可能是不一样.同样这也告诉我们了在指定NTP Server的时候应该使用hostname而不是IP</p>
 <p>第二个问题和第一个相关,既然有这么多的服务器就是为了在发生问题的时候其他的服务器还可以正常地给我们提供服务.那么如何知道这些服务器的状态呢? 这就是第一个记号会告诉我们的信息</p>
 <ul>
-<li>它告诉我们远端的服务器已经被确认为我们的主NTP Server,我们系统的时间将由这台机器所提供</li>
-</ul>
-<ul>
-<li>它将作为辅助的NTP Server和带有<em>号的服务器一起为我们提供同步服务. 当</em>号服务器不可用时它就可以接管<br>－ 远程服务器被clustering algorithm认为是不合格的NTP Server<br>x 远程服务器不可用</li>
+<li>* 它告诉我们远端的服务器已经被确认为我们的主NTP Server,我们系统的时间将由这台机器所提供  </li>
+<li>+ 它将作为辅助的NTP Server和带有<em>号的服务器一起为我们提供同步服务. 当</em>号服务器不可用时它就可以接管  </li>
+<li>－ 远程服务器被clustering algorithm认为是不合格的NTP Server  </li>
+<li>x 远程服务器不可用</li>
 </ul>
 <h3 id="ntp的安全设置"><a href="#ntp的安全设置" class="headerlink" title="ntp的安全设置"></a><font color="green">ntp的安全设置</font></h3><p>运行一个NTP Server不需要占用很多的系统资源,所以也不用专门配置独立的服务器,就可以给许多client提供时间同步服务, 但是一些基本的安全设置还是很有必要的<br>那么这里一个很简单的思路就是第一我们只允许局域网内一部分的用户连接到我们的服务器. 第二个就是这些client不能修改我们服务器上的时间</p>
 <p>关于权限设定部分<br>权限的设定主要以 restrict 这个参数来设定，主要的语法为：<br>restrict IP地址 mask 子网掩码 参数<br>其中 IP 可以是IP地址，也可以是 default ，default 就是指所有的IP<br>参数有以下几个：   </p>
