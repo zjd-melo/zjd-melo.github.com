@@ -113,11 +113,13 @@
 <meta property="og:site_name" content="朱佳东的个人博客">
 <meta property="og:description" content="c++引用、函数重载、类.
 引用">
+<meta property="og:image" content="http://i.imgur.com/Kw22ntX.png">
 <meta property="og:updated_time" content="2017-02-14T16:33:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cpp笔记">
 <meta name="twitter:description" content="c++引用、函数重载、类.
 引用">
+<meta name="twitter:image" content="http://i.imgur.com/Kw22ntX.png">
 
 
 
@@ -430,7 +432,26 @@
 <li>隐藏错误  </li>
 <li>下面的代码在没有看到函数原型之前可能会误认为实参a和b是通过值来传递的，从而不能通过函数调用来修改它，而事实上却能够修改  </li>
 </ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a=<span class="number">5</span>;</div><div class="line"><span class="keyword">int</span> b=<span class="number">6</span>;</div><div class="line">swap(a,b);</div><div class="line">``` </div><div class="line"></div><div class="line">- 传递指针和引用更大的目的是效率。当一个数据类型很大(后面介绍的自定义类型)时，因为传值要复制副本,所以不可取,另一方面，传递指针和引用存在传值所没有的危险。程序有时侯不允许传递的指针所指向的值被修改或者传递的引用被修改，但传递的地址特征使得所传的参数处于随时被修改的危险之中。保护实参不被修改的办法是传递<span class="keyword">const</span> 指针和引用C++不区分变量的<span class="keyword">const</span>引用和<span class="keyword">const</span>变量的引用。程序决不能给引用本身重新赋值，它指向另一个变量，因此引用总是<span class="keyword">const</span>的。如果对引用应用关键词<span class="keyword">const</span>，其作用就是使目标成为<span class="keyword">const</span>变量。</div><div class="line"></div><div class="line">![](http:<span class="comment">//i.imgur.com/Kw22ntX.png)</span></div><div class="line"></div><div class="line">### &lt;font color=<span class="string">"green"</span>&gt;内联函数&lt;/font&gt;  </div><div class="line">内联函数也叫内嵌函数，它主要是解决程序的运行效率。  </div><div class="line">函数调用需要建立栈内存环境，进行参数传递，并产生程序执行转移，这些工作都需要一些时间开销。有些函数使用频率高，但代码却很短。  </div><div class="line">编译器看到<span class="keyword">inline</span>后，为该函数创建一段代码，以便在后面每次碰到该函数的调用都用一段代码来替换。  </div><div class="line">内联函数可以在一开始仅声明一次。  </div><div class="line">内联函数必须在调用之前被声明或定义。  </div><div class="line">因为内联函数的代码必须在被替换之前已经生成被替换的代码。    </div><div class="line"></div><div class="line">内联函数的函数体限制</div><div class="line">  </div><div class="line"><span class="number">1.</span> 内联函数中，不能含有复杂的结构控制语句  </div><div class="line"><span class="number">2.</span> 递归函数(自己调用自己的函数)是不能被用来做内联函数的。  </div><div class="line"><span class="number">3.</span> 内联函数只适合于只有l到<span class="number">5</span>行的小函数。  </div><div class="line"></div><div class="line">内联函数与宏定义</div><div class="line">  </div><div class="line"><span class="number">1.</span> 宏定义可以代替小函数定义,但是有缺陷</div><div class="line"><span class="number">2.</span> 宏只是告诉编译器简单的替代代码,不检查参数类型, </div><div class="line"><span class="number">3.</span> 往往造成语句的实际结果不能代表程序员的意图 </div><div class="line"><span class="number">4.</span> 宏的作用可以用内联函数代替  </div><div class="line"></div><div class="line">```c++</div><div class="line">#define MAX(a，b)((a)&gt;(b)?(a)：(b))</div></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a=<span class="number">5</span>;</div><div class="line"><span class="keyword">int</span> b=<span class="number">6</span>;</div><div class="line">swap(a,b);</div></pre></td></tr></table></figure>
+<ul>
+<li>传递指针和引用更大的目的是效率。当一个数据类型很大(后面介绍的自定义类型)时，因为传值要复制副本,所以不可取,另一方面，传递指针和引用存在传值所没有的危险。程序有时侯不允许传递的指针所指向的值被修改或者传递的引用被修改，但传递的地址特征使得所传的参数处于随时被修改的危险之中。保护实参不被修改的办法是传递const 指针和引用C++不区分变量的const引用和const变量的引用。程序决不能给引用本身重新赋值，它指向另一个变量，因此引用总是const的。如果对引用应用关键词const，其作用就是使目标成为const变量。</li>
+</ul>
+<p><img src="http://i.imgur.com/Kw22ntX.png" alt=""></p>
+<h3 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a><font color="green">内联函数</font></h3><p>内联函数也叫内嵌函数，它主要是解决程序的运行效率。<br>函数调用需要建立栈内存环境，进行参数传递，并产生程序执行转移，这些工作都需要一些时间开销。有些函数使用频率高，但代码却很短。<br>编译器看到inline后，为该函数创建一段代码，以便在后面每次碰到该函数的调用都用一段代码来替换。<br>内联函数可以在一开始仅声明一次。<br>内联函数必须在调用之前被声明或定义。<br>因为内联函数的代码必须在被替换之前已经生成被替换的代码。    </p>
+<p>内联函数的函数体限制</p>
+<ol>
+<li>内联函数中，不能含有复杂的结构控制语句  </li>
+<li>递归函数(自己调用自己的函数)是不能被用来做内联函数的。  </li>
+<li>内联函数只适合于只有l到5行的小函数。  </li>
+</ol>
+<p>内联函数与宏定义</p>
+<ol>
+<li>宏定义可以代替小函数定义,但是有缺陷</li>
+<li>宏只是告诉编译器简单的替代代码,不检查参数类型, </li>
+<li>往往造成语句的实际结果不能代表程序员的意图 </li>
+<li>宏的作用可以用内联函数代替  </li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX(a，b)((a)&gt;(b)?(a)：(b))</span></div></pre></td></tr></table></figure>
 <p>通过一个内联函数可以得到所有宏的替换功能和所有可预见的状态以及常规函数的类型检查：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">MAX</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> a&gt;b? a:b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="重载函数"><a href="#重载函数" class="headerlink" title="重载函数"></a><font color="green">重载函数</font></h3><ol>
@@ -623,7 +644,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-number">1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重载函数"><span class="nav-number">2.</span> <span class="nav-text">重载函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类"><span class="nav-number">3.</span> <span class="nav-text">类</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-number">1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内联函数"><span class="nav-number">2.</span> <span class="nav-text">内联函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重载函数"><span class="nav-number">3.</span> <span class="nav-text">重载函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类"><span class="nav-number">4.</span> <span class="nav-text">类</span></a></li></ol></div>
             
 
           </div>
