@@ -1,0 +1,773 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="对于支持继承的编程语言来说，其方法（属性）可能定义在当前类，也可能来自于基类，所以在方法调用时就需要对当前类和基类进行搜索以确定方法所在的位置。而搜索的顺序就是所谓的「方法解析顺序」（Method Resolution Order，或MRO）。对于只支持单继承的语言来说，MRO 一般比较简单；而对于 Python 这种支持多继承的语言来说，MRO 就复杂很多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python mro算法">
+<meta property="og:url" content="http://yoursite.com/2017/02/16/python-mro算法/index.html">
+<meta property="og:site_name" content="朱佳东的个人博客">
+<meta property="og:description" content="对于支持继承的编程语言来说，其方法（属性）可能定义在当前类，也可能来自于基类，所以在方法调用时就需要对当前类和基类进行搜索以确定方法所在的位置。而搜索的顺序就是所谓的「方法解析顺序」（Method Resolution Order，或MRO）。对于只支持单继承的语言来说，MRO 一般比较简单；而对于 Python 这种支持多继承的语言来说，MRO 就复杂很多">
+<meta property="og:image" content="http://i.imgur.com/hq264AX.png">
+<meta property="og:image" content="http://i.imgur.com/RdFmRkj.png">
+<meta property="og:image" content="http://i.imgur.com/f6k3e6g.png">
+<meta property="og:updated_time" content="2017-02-16T09:03:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python mro算法">
+<meta name="twitter:description" content="对于支持继承的编程语言来说，其方法（属性）可能定义在当前类，也可能来自于基类，所以在方法调用时就需要对当前类和基类进行搜索以确定方法所在的位置。而搜索的顺序就是所谓的「方法解析顺序」（Method Resolution Order，或MRO）。对于只支持单继承的语言来说，MRO 一般比较简单；而对于 Python 这种支持多继承的语言来说，MRO 就复杂很多">
+<meta name="twitter:image" content="http://i.imgur.com/hq264AX.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/16/python-mro算法/"/>
+
+
+
+
+
+  <title> python mro算法 | 朱佳东的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">朱佳东的个人博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">欢迎来到我的博客</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/16/python-mro算法/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="melo">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/melo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="朱佳东的个人博客">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="朱佳东的个人博客" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                python mro算法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-16T09:03:57Z">
+                2017-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>对于支持继承的编程语言来说，其方法（属性）可能定义在当前类，也可能来自于基类，所以在方法调用时就需要对当前类和基类进行搜索以确定方法所在的位置。而搜索的顺序就是所谓的「方法解析顺序」（Method Resolution Order，或MRO）。对于只支持单继承的语言来说，MRO 一般比较简单；而对于 Python 这种支持多继承的语言来说，MRO 就复杂很多</p>
+</blockquote>
+<a id="more"></a>
+<p>先看一个菱形继承的例子  </p>
+<center><img src="http://i.imgur.com/hq264AX.png" alt=""></center>
+
+<p>如果 x 是 D 的一个实例，那么 x.show() 到底会调用哪个 show 方法呢？如果按照 [D, B, A, C] 的搜索顺序，那么 x.show() 会调用 A.show()；如果按照 [D, B, C, A] 的搜索顺序，那么 x.show() 会调用 C.show()。由此可见，MRO 是把类的继承关系线性化的一个过程，而线性化方式决定了程序运行过程中具体会调用哪个方法。既然如此，那什么样的 MRO 才是最合理的？Python 中又是如何实现的呢？</p>
+<p>python至少有3种不同的MRO:  </p>
+<ul>
+<li>经典类（classic class）的深度遍历  </li>
+<li>Python 2.2 的新式类（new-style class）预计算 </li>
+<li>Python 2.3 的新式类的 C3 算法。它也是 Python 3 唯一支持的方式  </li>
+</ul>
+<h3 id="经典类的MRO"><a href="#经典类的MRO" class="headerlink" title="经典类的MRO"></a><font color="green">经典类的MRO</font></h3><blockquote>
+<p>Python 有两种类：经典类（classic class）和新式类（new-style class）。两者的不同之处在于新式类继承自 object。在 Python 2.1 以前，经典类是唯一可用的形式；Python 2.2 引入了新式类，使得类和内置类型更加统一；在 Python 3 中，新式类是唯一支持的类  </p>
+</blockquote>
+<p>经典类采用了一种很简单的 MRO 方法：从左至右的深度优先遍历。以上述菱形继承为例，其查找顺序为 [D, B, A, C, A]，如果只保留重复类的第一个则结果为 [D, B, A, C]。我们可以用 inspect.getmro 来获取类的 MRO<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import inspect</div><div class="line">&gt;&gt;&gt; class A:</div><div class="line">...     def show(self):</div><div class="line">...         print "A.show()"</div><div class="line">... </div><div class="line">&gt;&gt;&gt; class B(A):pass</div><div class="line">... </div><div class="line">&gt;&gt;&gt; class C(A):</div><div class="line">...     def show(self):</div><div class="line">...         print "C.show()"</div><div class="line">... </div><div class="line">&gt;&gt;&gt; class D(B,C):pass</div><div class="line">... </div><div class="line">&gt;&gt;&gt; inspect.getmro(D)</div><div class="line">(&lt;class __main__.D at 0x7f2bf1076940&gt;, &lt;class __main__.B at 0x7f2bf1076870&gt;, &lt;class __main__.A at 0x7f2bf1076808&gt;, &lt;class __main__.C at 0x7f2bf10768d8&gt;)</div><div class="line">&gt;&gt;&gt; x = D()</div><div class="line">&gt;&gt;&gt; x.show()</div><div class="line">A.show()</div><div class="line">[D B A C]</div></pre></td></tr></table></figure></p>
+<p>这种深度优先遍历(先继承的先遍历,表面上看是覆盖了后继承的同名方法)对于简单的情况还能处理的不错，但是对于上述菱形继承其结果却不尽如人意：虽然 C.show() 是 A.show() 的更具体化版本（显示了更多的信息），但我们的x.show() 没有调用它，而是调用了 A.show()。这显然不是我们希望的结果<br><strong>对于新式类而言，所有的类都继承自 object，所以菱形继承是非常普遍的现象，因此不可能采用这种 MRO 方式</strong>  </p>
+<h3 id="Python-2-2-的新式类-MRO"><a href="#Python-2-2-的新式类-MRO" class="headerlink" title="Python 2.2 的新式类 MRO"></a><font color="green">Python 2.2 的新式类 MRO</font></h3><blockquote>
+<p>为解决经典类 MRO 所存在的问题，Python 2.2 针对新式类提出了一种新的 MRO 计算方式：在定义类时就计算出该类的 MRO 并将其作为类的属性。因此新式类可以直接通过 __mro__ 属性获取类的 MRO</p>
+</blockquote>
+<p>Python 2.2 的新式类 MRO 计算方式和经典类 MRO 的计算方式非常相似：它仍然采用从左至右的深度优先遍历，但是如果遍历中出现重复的类，只保留最后一个。重新考虑上面菱形继承的例子，由于新式类继承自 object 因此类图稍有改变  </p>
+<p><center><img src="http://i.imgur.com/RdFmRkj.png" alt=""></center><br>按照深度遍历，其顺序为 [D, B, A, object, C, A, object]，重复类只保留最后一个，因此变为 [D, B, C, A, object]<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class A(object):</div><div class="line">...     def show(self):</div><div class="line">...         print "A.show()"</div><div class="line">...</div><div class="line">&gt;&gt;&gt; class B(A): pass</div><div class="line">&gt;&gt;&gt; class C(A):</div><div class="line">...     def show(self):</div><div class="line">...         print "C.show()"</div><div class="line">...</div><div class="line">&gt;&gt;&gt; class D(B, C): pass</div><div class="line">&gt;&gt;&gt; D.__mro__</div><div class="line">(&lt;class '__main__.D'&gt;, &lt;class '__main__.B'&gt;, &lt;class '__main__.C'&gt;, &lt;class '__main__.A'&gt;, &lt;type 'object'&gt;)</div><div class="line">&gt;&gt;&gt; x = D()</div><div class="line">&gt;&gt;&gt; x.show()</div><div class="line">C.show()</div></pre></td></tr></table></figure></p>
+<p>这种 MRO 方式已经能够解决「菱形继承」问题，再让我们看个稍微复杂点的例子  </p>
+<p><center><img src="http://i.imgur.com/f6k3e6g.png" alt=""></center><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">X</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Y</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(X, Y)</span>:</span> <span class="keyword">pass</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(Y, X)</span>:</span> <span class="keyword">pass</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(A, B)</span>:</span> <span class="keyword">pass</span></div></pre></td></tr></table></figure></p>
+<p>首先进行深度遍历，结果为 [C, A, X, object, Y, object, B, Y, object, X, object]；然后，只保留重复元素的最后一个，结果为 [C, A, B, Y, X, object]。Python 2.2 在实现该方法的时候进行了调整，使其更<strong>尊重基类中类出现的顺序</strong>，其实际结果为[C, A, B, X, Y, object]<br>这样的结果是否合理呢？首先我们看下各个类中的方法解析顺序：对于 A 来说，其搜索顺序为[A, X, Y, object]；对于 B，其搜索顺序为 [B, Y, X, object]；对于 C，其搜索顺序为 [C, A, B, X, Y, object]。我们会发现，B 和 C 中 X、Y 的搜索顺序是相反的！也就是说，当 B 被继承时，它本身的行为竟然也发生了改变，这很容易导致不易察觉的错误。此外，即使把 C 搜索顺序中 X 和 Y 互换仍然不能解决问题，这时候它又会和 A 中的搜索顺序相矛盾  </p>
+<p>事实上，不但上述特殊情况会出现问题，在其它情况下也可能出问题。其原因在于，上述继承关系违反了线性化的单调性原则。Michele Simionato对单调性的定义为：</p>
+<p>A MRO is monotonic when the following is true: if C1 precedes C2 in the linearization of C, then C1 precedes C2 in the linearization of any subclass of C. Otherwise, the innocuous operation of deriving a new class could change the resolution order of methods, potentially introducing very subtle bugs.<br>也就是说，子类不能改变基类的方法搜索顺序。在 Python 2.2 的 MRO 算法中并不能保证这种单调性，它不会阻止程序员写出上述具有二义性的继承关系，因此很可能成为错误的根源，除了单调性之外，Python 2.2 及 经典类的 MRO 也可能违反继承的局部优先级，具体例子可以参见官方文档。采用一种更好的 MRO 方式势在必行  </p>
+<h3 id="C3-MRO"><a href="#C3-MRO" class="headerlink" title="C3 MRO"></a><font color="green">C3 MRO</font></h3><p>为解决 Python 2.2 中 MRO 所存在的问题，Python 2.3以后采用了 C3 方法来确定方法解析顺序。你如果在 Python 2.3 以后版本里输入上述代码，就会产生一个异常，禁止创建具有二义性的继承关系：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(A, B)</span>:</span> <span class="keyword">pass</span></div><div class="line">Traceback (most recent call last):</div><div class="line">  File <span class="string">"&lt;ipython-input-8-01bae83dc806&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(A, B)</span>:</span> <span class="keyword">pass</span></div><div class="line">TypeError: Error when calling the metaclass bases</div><div class="line">    Cannot create a consistent method resolution</div><div class="line">order (MRO) <span class="keyword">for</span> bases X, Y</div></pre></td></tr></table></figure></p>
+<p>我们把类 C 的线性化（MRO）记为 L[C] = [C1, C2,…,CN]。其中 C1 称为 L[C] 的头，其余元素 [C2,…,CN] 称为尾。如果一个类 C 继承自基类 B1、B2、……、BN，那么我们可以根据以下两步计算出 L[C]：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">L[object] = [object]</div><div class="line">L[C(B1…BN)] = [C] + merge(L[B1]…L[BN], [B1]…[BN])</div></pre></td></tr></table></figure></p>
+<p>这里的关键在于 merge，其输入是一组列表，按照如下方式输出一个列表：</p>
+<p>检查第一个列表的头元素（如 L[B1] 的头），记作 H。<br>若 H 未出现在其它列表的尾部，则将其输出，并将其从所有列表中删除，然后回到步骤1；否则，取出下一个列表的头部记作 H，继续该步骤<br>重复上述步骤，直至列表为空或者不能再找出可以输出的元素。如果是前一种情况，则算法结束；如果是后一种情况，说明无法构建继承关系，Python会抛出异常  </p>
+<p>该方法有点类似于图的拓扑排序，但它同时还考虑了基类的出现顺序。我们用 C3 分析一下刚才的例子<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">object，X，Y 的线性化结果比较简单：</div><div class="line">	</div><div class="line">L[object] = [object]</div><div class="line">L[X] = [X, object]</div><div class="line">L[Y] = [Y, object]</div><div class="line"></div><div class="line">A 的线性化计算如下：</div><div class="line">	</div><div class="line">L[A] = [A] + merge(L[X], L[Y], [X], [Y])</div><div class="line">     = [A] + merge([X, object], [Y, object], [X], [Y])</div><div class="line">     = [A, X] + merge([object], [Y, object], [Y])</div><div class="line">     = [A, X, Y] + merge([object], [object])</div><div class="line">     = [A, X, Y, object]</div></pre></td></tr></table></figure></p>
+<p>注意第3步，merge([object], [Y, object], [Y]) 中首先输出的是 Y 而不是 object。这是因为 object 虽然是第一个列表的头，但是它出现在了第二个列表的尾部。所以我们会跳过第一个列表，去检查第二个列表的头部，也就是 Y。Y 没有出现在其它列表的尾部，所以将其输出。</p>
+<p>同理，B 的线性化结果为：L[B] = [B, Y, X, object]<br>最后，我们看看 C 的线性化结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">L[C] = [C] + merge(L[A], L[B], [A], [B])</div><div class="line">     = [C] + merge([A, X, Y, object], [B, Y, X, object], [A], [B])</div><div class="line">     = [C, A] + merge([X, Y, object], [B, Y, X, object], [B])</div><div class="line">     = [C, A, B] + merge([X, Y, object], [Y, X, object])</div></pre></td></tr></table></figure></p>
+<p>到了最后一步我们没有办法继续计算下去 了：X 虽然是第一个列表的头，但是它出现在了第二个列表的尾部；Y 虽然是第二个列表的头，但是它出现在了第一个列表的尾部。因此，我们无法构建一个没有二义性的继承关系，只能手工去解决（比如改变 B 基类中 X、Y 的顺序）</p>
+<p>我们再看一个没有冲突的例子  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">L[object] = [object]</div><div class="line">L[D] = [D, object]</div><div class="line">L[E] = [E, object]</div><div class="line">L[F] = [F, object]</div><div class="line">L[B] = [B, D, E, object]</div><div class="line">L[C] = [C, D, F, object]</div><div class="line">L[A] = [A] + merge(L[B], L[C], [B], [C])</div><div class="line">     = [A] + merge([B, D, E, object], [C, D, F, object], [B], [C])</div><div class="line">     = [A, B] + merge([D, E, object], [C, D, F, object], [C])</div><div class="line">     = [A, B, C] + merge([D, E, object], [D, F, object])</div><div class="line">     = [A, B, C, D] + merge([E, object], [F, object])</div><div class="line">     = [A, B, C, D, E] + merge([object], [F, object])</div><div class="line">     = [A, B, C, D, E, F] + merge([object], [object])</div><div class="line">     = [A, B, C, D, E, F, object]</div><div class="line">当然，可以用代码验证类的 MRO，上面的例子可以写作：</div><div class="line"></div><div class="line">&gt;&gt;&gt; class D(object): pass</div><div class="line">&gt;&gt;&gt; class E(object): pass</div><div class="line">&gt;&gt;&gt; class F(object): pass</div><div class="line">&gt;&gt;&gt; class B(D, E): pass</div><div class="line">&gt;&gt;&gt; class C(D, F): pass</div><div class="line">&gt;&gt;&gt; class A(B, C): pass</div><div class="line">&gt;&gt;&gt; A.__mro__</div><div class="line">(&lt;class '__main__.A'&gt;, &lt;class '__main__.B'&gt;, &lt;class '__main__.C'&gt;, &lt;class '__main__.D'&gt;, &lt;class '__main__.E'&gt;, &lt;class '__main__.F'&gt;, &lt;type 'object'&gt;)</div></pre></td></tr></table></figure>
+<h3 id="深度优先遍历-Depth-First-Traversal"><a href="#深度优先遍历-Depth-First-Traversal" class="headerlink" title="深度优先遍历(Depth-First Traversal)"></a><font color="green">深度优先遍历(Depth-First Traversal)</font></h3><blockquote>
+<p>假设给定图G的初态是所有顶点均未曾访问过。在G中任选一顶点v为初始出发点(源点)，则深度优先遍历可定义如下：首先访问出发点v，并将其标记为已访问过；然后依次从v出发搜索v的每个邻接点w。若w未曾访问过，则以w为新的出发点继续进行深度优先遍历，直至图中所有和源点v有路径相通的顶点(亦称为从源点可达的顶点)均已被访问为止。若此时图中仍有未访问的顶点，则另选一个尚未访问的顶点作为新的源点重复上述过程，直至图中所有顶点均已被访问为止。<br>图的深度优先遍历类似于树的前序遍历。采用的搜索方法的特点是尽可能先对纵深方向进行搜索。这种搜索方法称为深度优先搜索(Depth-First Search)。相应地，用此方法遍历图就很自然地称之为图的深度优先遍历。<br>设x是当前被访问顶点，在对x做过访问标记后，选择一条从x出发的未检测过的边(x，y)。若发现顶点y已访问过，则重新选择另一条从x出发的未检测过的边，否则沿边(x，y)到达未曾访问过的y，对y访问并将其标记为已访问过；然后从y开始搜索，直到搜索完从y出发的所有路径，即访问完所有从y出发可达的顶点之后，才回溯到顶点x，并且再选择一条从x出发的未检测过的边。上述过程直至从x出发的所有边都已检测过为止。此时，若x不是源点，则回溯到在x之前被访问过的顶点；否则图中所有和源点有路径相通的顶点(即从源点可达的所有顶点)都已被访问过，若图G是连通图，则遍历过程结束，否则继续选择一个尚未被访问的顶点作为新的顶点，继续遍历</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/16/Ubuntu配置静态ip/" rel="next" title="Ubuntu配置静态ip">
+                <i class="fa fa-chevron-left"></i> Ubuntu配置静态ip
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/16/git简单介绍/" rel="prev" title="git简单介绍">
+                git简单介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/melo.png"
+               alt="melo" />
+          <p class="site-author-name" itemprop="name">melo</p>
+          <p class="site-description motion-element" itemprop="description">没有岩石的阻挡怎能击起美丽的浪花</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#经典类的MRO"><span class="nav-number">1.</span> <span class="nav-text">经典类的MRO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-2-2-的新式类-MRO"><span class="nav-number">2.</span> <span class="nav-text">Python 2.2 的新式类 MRO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C3-MRO"><span class="nav-number">3.</span> <span class="nav-text">C3 MRO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深度优先遍历-Depth-First-Traversal"><span class="nav-number">4.</span> <span class="nav-text">深度优先遍历(Depth-First Traversal)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">melo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
