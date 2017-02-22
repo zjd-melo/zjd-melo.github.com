@@ -1,0 +1,801 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker. It supports data structures such as strings, hashes, lists, sets, sorted sets wit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis命令">
+<meta property="og:url" content="http://yoursite.com/2017/02/22/redis命令/index.html">
+<meta property="og:site_name" content="朱佳东的个人博客">
+<meta property="og:description" content="Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker. It supports data structures such as strings, hashes, lists, sets, sorted sets wit">
+<meta property="og:image" content="http://i.imgur.com/PINd3ww.png">
+<meta property="og:image" content="http://i.imgur.com/M3evaeY.png">
+<meta property="og:image" content="http://i.imgur.com/Ucg9WOE.png">
+<meta property="og:updated_time" content="2017-02-22T13:33:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis命令">
+<meta name="twitter:description" content="Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker. It supports data structures such as strings, hashes, lists, sets, sorted sets wit">
+<meta name="twitter:image" content="http://i.imgur.com/PINd3ww.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/22/redis命令/"/>
+
+
+
+
+
+  <title> redis命令 | 朱佳东的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">朱佳东的个人博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">欢迎来到我的博客</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/22/redis命令/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="melo">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/melo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="朱佳东的个人博客">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="朱佳东的个人博客" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                redis命令
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-22T21:33:22+08:00">
+                2017-02-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSql/" itemprop="url" rel="index">
+                    <span itemprop="name">NoSql</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSql/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Redis is an open source (BSD licensed), in-memory <strong>data structure store</strong>, used as a database, cache and message broker. It supports data structures such as <strong>strings, hashes, lists, sets, sorted sets</strong> with range queries, bitmaps, hyperloglogs and geospatial indexes with radius queries</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="redis-key的操作"><a href="#redis-key的操作" class="headerlink" title="redis key的操作"></a><font color="green">redis key的操作</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">redis key的查询 允许3种模糊查询 * ? []</div><div class="line">keys *                    获取所有key  </div><div class="line">keys  nam?                ?匹配单个字符  </div><div class="line">[]                        匹配中括号中的某一个字符</div><div class="line">randomkey                 返回随机的一个key</div><div class="line">type key   </div><div class="line">exists key                判断key是否存在 返回1/0</div><div class="line">del key1 keys2            返回删除的个数</div><div class="line">rename sourcekey newkey   改名</div><div class="line">renamenx sourcekey newkey 当newkey不存在时才能修改否则会覆盖已存在的newkey</div><div class="line">redis默认初始化了16个databases(0-15),可以在配置文件中修改</div><div class="line">select num          移动到num号数据库</div><div class="line">move key 1          把key移动到1号数据库</div><div class="line">ttl key             查询key的生命周期,-1是永久有效,不存在的key返回-2</div><div class="line">expire key seconds  设置key的生命周期 单位秒</div><div class="line">pttl pexpire        以毫秒为单位设置</div><div class="line">persist key         设置key永久有效</div></pre></td></tr></table></figure>
+<h3 id="redis-string"><a href="#redis-string" class="headerlink" title="redis string"></a><font color="green">redis string</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">set key value [EX seconds] [PX milliseconds] [NX|XX]</div><div class="line">如: set a 1 ex 10 10秒有效</div><div class="line">Set a 1 px 9000   9秒有效</div><div class="line">注: 如果ex,px同时写,以后面的有效期为准</div><div class="line">如 set a 1 ex 100 px 9000, 实际有效期是9000毫秒</div><div class="line">nx: 表示key不存在时,执行操作</div><div class="line">xx: 表示key存在时,执行操作  update</div><div class="line"></div><div class="line">mset k1 v1 k2 v2 </div><div class="line">mget k1 k2</div><div class="line"> </div><div class="line">SETRANGE key offset value</div><div class="line">把字符串的offset偏移字节,改成value 如果偏移量大于字符长度,中间用0x00补充</div><div class="line">APPEND key value  把value追加到key的原值上  </div><div class="line">GETRANGE key start end</div><div class="line">GETSET key value   获取原值并设置新值</div><div class="line">INCR key</div><div class="line">DECR key</div><div class="line">INCRBY key num</div><div class="line">DECRBY key num</div><div class="line">INCRBYFLOAT key floatnum</div></pre></td></tr></table></figure>
+<p>位操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">getbit key offset         获取值的二进制表示,对应位上的值(从左,从0编号)</div><div class="line"></div><div class="line">setbit  key offset value  设置offset对应二进制位上的值返回该位上的旧值 </div><div class="line">1:如果offset过大,则会在中间填充0,</div><div class="line">2:offset最大大到多少</div><div class="line">3:offset最大2^32-1,可推出最大的的字符串为512M</div><div class="line"></div><div class="line">bitop operation destkey key1 [key2 ...]</div><div class="line">对key1,key2..keyN作operation,并将结果保存到 destkey 上。</div><div class="line">operation 可以是 AND 、 OR 、 NOT 、 XOR</div><div class="line">注意: 对于NOT操作, key不能多个</div></pre></td></tr></table></figure></p>
+<h3 id="redis-list"><a href="#redis-list" class="headerlink" title="redis list"></a><font color="green">redis list</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">LPUSH/RPUSH key value [value ...]</div><div class="line">LPOP/RPOP key</div><div class="line">LRANGE key start stop</div><div class="line">LLEN key</div><div class="line"></div><div class="line">LREM key count value  从key链表中删除 value值</div><div class="line">删除count的绝对值个value后结束</div><div class="line">Count&gt;0 从表头删除</div><div class="line">Count&lt;0 从表尾删除</div><div class="line"></div><div class="line">LTRIM key start stop  删除一段  </div><div class="line">LINDEX key index      取出一个元素</div><div class="line"></div><div class="line">LINSERT key BEFORE|AFTER pivot value 在某个值前后插入,如果指定的值有多个那么只在第一次出现时操作</div><div class="line">RPOPLPUSH source destination         原子性操作</div><div class="line"></div><div class="line">BRPOP/BLPOP key [key ...] timeout    等待弹出key的尾/头元素, </div><div class="line">Timeout为等待超时时间 如果timeout为0,则一直等待 场景: 长轮询Ajax,在线聊天时,能够用到</div></pre></td></tr></table></figure>
+<h3 id="redis-set"><a href="#redis-set" class="headerlink" title="redis set"></a><font color="green">redis set</font></h3><p>集合的性质:唯一性，无序性，确定性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">SADD key member [member ...] </div><div class="line">SMEMBERS key                     返回集合的元素  </div><div class="line">srem key member [member ...]     删除元素 忽略不存在的元素后,真正删除掉的元素的个数</div><div class="line"> </div><div class="line">SPOP key [count]                 返回并删除集合中key中count个随机元素</div><div class="line">SRANDMEMBER key [count]  </div><div class="line">ISMEMBER key member              判断value是否在key集合中 是返回1,否返回0</div><div class="line">SCARD key                        返回集合的元素个数</div><div class="line">SMOVE source destination member  把source中的元素移动到destination中</div><div class="line">SINTER key [key ...]  交集  </div><div class="line">SUNION key [key ...]  并集  </div><div class="line">SDIFF key [key ...]   差集  A中有B种没有的元素 存储用store sinterstore dest k1 k2...</div></pre></td></tr></table></figure></p>
+<h3 id="redis-sorted-set"><a href="#redis-sorted-set" class="headerlink" title="redis sorted set"></a><font color="green">redis sorted set</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">ZADD key [NX|XX] [CH] [INCR] score member [score member ...]</div><div class="line">XX: Only update elements that already exist. Never add elements.</div><div class="line">NX: Don&apos;t update already existing elements. Always add new elements.</div><div class="line">CH: Modify the return value from the number of new elements added, to the total number of elements</div><div class="line">changed (CH is an abbreviation of changed). Changed elements are new elements added and elements already</div><div class="line">existing for which the score was updated. So elements specified in the command line having the same score </div><div class="line">as they had in the past are not counted. Note: normally the return value of ZADD only counts the number </div><div class="line">of new elements added.</div><div class="line">INCR: When this option is specified ZADD acts like ZINCRBY. Only one score-element pair can be specified in this mode.</div><div class="line"></div><div class="line">ZREM key member [member ...]</div><div class="line">ZREMRANGEBYSCORE key min max        按照socre来删除元素,删除score在[min,max]之间的  </div><div class="line">ZREMRANGEBYRANK key start stop      按排名删除元素,删除名次在[start,end]之间的</div><div class="line">ZRANGE key start stop [WITHSCORES]  把集合排序后,返回名次[start,stop]的元素</div><div class="line">ZREVRANGE key start stop            降序</div><div class="line">ZRANK key member                    查询member的排名 升序</div><div class="line">ZREVRANK key memeber                降序</div><div class="line">ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count] 集合(升续)排序后,取score在[min,max]内的元素,并跳过 offset个, 取出N个</div><div class="line"></div><div class="line">ZCARD key </div><div class="line">ZCOUNT key min max                  返回分数在[min,max] 区间内元素的数量</div><div class="line"></div><div class="line">ZINTERSTORE destination numkeys key [key ...] [WEIGHTS weight] [AGGREGATE SUM|MIN|MAX]</div></pre></td></tr></table></figure>
+<h3 id="redis-hash"><a href="#redis-hash" class="headerlink" title="redis hash"></a><font color="green">redis hash</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">HSET key field value       把key中 filed域的值设为value 如果没有field域,直接添加,如果有,则覆盖原field域的值 </div><div class="line">HMSET key field value [field value ...]</div><div class="line">HGET key field</div><div class="line">HMGET key field [field ...]</div><div class="line">HGETALL key                返回key中,所有域与其值</div><div class="line">HDEL key field [field ...]  </div><div class="line">HLEN key  </div><div class="line">HEXISTS key field </div><div class="line">HINCRBY key field increment</div><div class="line">HKEYS key                 返回key所有的键</div><div class="line">HVALS key                 返回key所有的值</div></pre></td></tr></table></figure>
+<h3 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a><font color="green">redis事务</font></h3><p>redis支持简单的事务<br>redis与mysql的对比 </p>
+<table><br>    <tr><br>        <td>state</td><br>        <td>Mysql</td><br>        <td>redis</td><br>    </tr><br>    <tr><br>        <td>开启</td><br>        <td>start transaction</td><br>        <td>multi</td><br>    </tr><br>    <tr><br>        <td>语句</td><br>        <td>普通的sql</td><br>        <td>普通命令</td><br>    </tr><br>    <tr><br>        <td>失败</td><br>        <td>rollback回滚</td><br>        <td>discard取消</td><br>    </tr><br>    <tr><br>        <td>成功</td><br>        <td>commit</td><br>        <td>exec</td><br>    </tr><br></table>
+
+<p>rollback与discard 的区别<br>如果已经成功执行了2条语句, 第3条语句出错.Rollback后,前2条的语句影响消失.<br>Discard只是结束本次事务,前2条语句造成的影响仍然还在  </p>
+<p>在mutil后面的语句中, 语句出错可能有2种情况  </p>
+<ol>
+<li><p>语法就有问题<br>这种,exec时,报错, 所有语句得不到执行</p>
+</li>
+<li><p>语法本身没错,但适用对象有问题. 比如 zadd 操作list对象<br>Exec之后,会执行正确的语句,并跳过有不适当的语句.</p>
+</li>
+</ol>
+<p>悲观锁和乐观锁   </p>
+<p>Redis的事务中,启用的是乐观锁,只负责监测key没有被改动.  watch<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:6379&gt; set ticket 1</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; set money 100</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; WATCH ticket</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; multi</div><div class="line">OK</div><div class="line">127.0.0.1:6379&gt; DECR ticket</div><div class="line">QUEUED</div><div class="line">127.0.0.1:6379&gt; DECRBY money 100</div><div class="line">QUEUED</div><div class="line">127.0.0.1:6379&gt; exec   如果此时ticket的值变动了那么事务将取消  exec后返回nil</div><div class="line">1) (integer) 0</div><div class="line">2) (integer) 0</div><div class="line">127.0.0.1:6379&gt; mget ticket money</div><div class="line">1) &quot;0&quot;</div><div class="line">2) &quot;0&quot;</div><div class="line">watch key1 key2  ... keyN  监听key1 key2..keyN有没有变化,如果有变, 则事务取消</div><div class="line">unwatch 取消所有watch监听</div></pre></td></tr></table></figure></p>
+<h3 id="redis消息发布与订阅"><a href="#redis消息发布与订阅" class="headerlink" title="redis消息发布与订阅"></a><font color="green">redis消息发布与订阅</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PUBLISH channel message</div><div class="line">SUBSCRIBE channel [channel ...]</div></pre></td></tr></table></figure>
+<h3 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a><font color="green">redis持久化</font></h3><p>redis支持两种持久化方式rdb和aof  </p>
+<h4 id="rdb的工作原理和配置"><a href="#rdb的工作原理和配置" class="headerlink" title="rdb的工作原理和配置"></a><font color="green">rdb的工作原理和配置</font></h4><p>每隔<strong>N分钟或N次</strong>写操作后,从内存dump数据形成rdb文件,<strong>压缩</strong> 放在备份 <strong>目录</strong><br>加粗的是可配置的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">save 900 1    900秒内至少有一个key发生变化</div><div class="line">save 300 10   300秒内至少有10个key发生变化</div><div class="line">save 60 10000 60秒内至少有10000个key发生变化</div><div class="line">从下往上看</div><div class="line">stop-writes-on-bgsave-error yes  后台存储错误停止写操作  </div><div class="line">rdbcompression yes               使用LZF压缩rdb文件</div><div class="line">rdbchecksum yes                  redis恢复时对rdb文件的检查</div><div class="line">dbfilename dump.rdb</div><div class="line">dir ./</div></pre></td></tr></table></figure></p>
+<p>如果不想使用rdb注释上面3个条件即可  </p>
+<p>rdb的优点与缺陷<br>rdb恢复的更快<br>在两个保存点之间断电将会丢失1-N分钟的数据,所以有了第二种方式aof方式append only file</p>
+<h4 id="aof的工作原理和配置"><a href="#aof的工作原理和配置" class="headerlink" title="aof的工作原理和配置"></a><font color="green">aof的工作原理和配置</font></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">appendonly no                     是否打开aof日志功能 默认关闭</div><div class="line">appendfilename &quot;appendonly.aof&quot;</div><div class="line">appendfsync always fsync after every write to the append only log. Slow, Safest   每一个命令都立即同步到aof安全速度慢</div><div class="line">appendfsync everysec  fsync only one time every second. Compromise.               折中方案 每秒一次</div><div class="line">appendfsync no  don&apos;t fsync, just let the OS flush the data when it wants. Faster 写入操作交给os,</div><div class="line">由os判断缓冲区大小,统一写入到aof同步频率低速度快</div><div class="line">no-appendfsync-on-rewrite no                                                      正在导出rdb快照的过程中要不要停止同步aof</div><div class="line">If you have latency problems turn this to &quot;yes&quot;. Otherwise leave it as</div><div class="line">&quot;no&quot; that is the safest pick from the point of view of durability.</div><div class="line">auto-aof-rewrite-percentage 100   aof文件大小比起上次重写时的大小,增长率100%时,重写</div><div class="line">auto-aof-rewrite-min-size 64mb    aof文件,至少超过64M时,重写</div></pre></td></tr></table></figure>
+<ul>
+<li><p>在dump rdb过程中,aof如果停止同步,会不会丢失<br>不会,所有的操作缓存在内存的队列里, dump完成后,统一操作.</p>
+</li>
+<li><p>aof重写是指什么<br>aof重写是指把内存中的数据,逆化成命令,写入到.aof日志里.以解决aof日志过大的问题.</p>
+</li>
+<li><p>如果rdb文件,和aof文件都存在,优先用谁来恢复数据<br>aof</p>
+</li>
+<li><p>2种是否可以同时用<br>可以,而且推荐这么做</p>
+</li>
+<li><p>恢复时rdb和aof哪个恢复的快<br>rdb快,因为其是数据的内存映射,直接载入到内存,而aof是命令,需要逐条执行</p>
+</li>
+</ul>
+<h3 id="redis集群"><a href="#redis集群" class="headerlink" title="redis集群"></a><font color="green">redis集群</font></h3><p>集群的作用</p>
+<ul>
+<li>主从备份 防止主机宕机</li>
+<li>读写分离,分担master的任务</li>
+<li>任务分离,如从服分别分担备份工作与计算工作</li>
+</ul>
+<p><img src="http://i.imgur.com/PINd3ww.png" alt=""><br><img src="http://i.imgur.com/M3evaeY.png" alt=""></p>
+<p>第二种方式的好处 master宕机后,可以直接切换到slave1 </p>
+<p>主从通信的过程  </p>
+<p><img src="http://i.imgur.com/Ucg9WOE.png" alt=""></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a><font color="green">配置</font></h3><p>master配置  </p>
+<ul>
+<li>关闭rdb快照(备份工作交给slave)</li>
+<li>可以开启aof</li>
+<li>关闭保护模式  </li>
+<li>bind 地址 默认只允许本机访问 </li>
+<li>关闭firewall</li>
+</ul>
+<p>slave配置  </p>
+<ul>
+<li>声明slave-of</li>
+<li>配置密码(如果master有密码)</li>
+<li>某一个slave打开rdb快照功能</li>
+<li>配置是否只读slave-read-only</li>
+</ul>
+<h3 id="redis主从复制的缺陷"><a href="#redis主从复制的缺陷" class="headerlink" title="redis主从复制的缺陷"></a><font color="green">redis主从复制的缺陷</font></h3><p>每次salave断开后,(无论是主动断开,还是网络故障)再连接master  </p>
+<p>都要master全部dump出来rdb,再aof,即同步的过程都要重新执行1遍.</p>
+<p>所以要记住—多台slave不要一下都启动起来,否则master可能IO剧增</p>
+<p>把一个redis的数据迁移到另一个redis只需要把rdb文件复制过去</p>
+<p>如果不小心flushall了,此时应该立马停止服务（shutdown nosave）,防止aof重写,找到aof文件删除flushall命令在重启redis服务,可以在一定的情况下恢复数据,否则后果会很严重</p>
+<h3 id="redis运维相关命令"><a href="#redis运维相关命令" class="headerlink" title="redis运维相关命令"></a><font color="green">redis运维相关命令</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">time         查看时间戳和微秒数  </div><div class="line">DBSIZE       查看当前库中的key数量</div><div class="line">BGREWRITEAOF 后台进程重写AOF</div><div class="line">BGSAVE       后台保存rdb快照</div><div class="line">SAVE         保存rdb快照</div><div class="line">LASTSAVE     上次保存时间</div><div class="line">SLAVEOF      设为slave服务器</div><div class="line">FLUSHALL     清空所有db</div><div class="line">FLUSHDB      清空当前db</div><div class="line">SHUTDOWN[&quot;&quot;|save|nosave]     断开连接,关闭服务器</div><div class="line">SLOWLOG      显示慢查询</div><div class="line">INFO         显示服务器信息</div><div class="line">CONFIG GET   获取配置信息</div><div class="line">CONFIG SET   设置配置信息</div><div class="line">MONITOR      打开控制台</div><div class="line">SYNC         主从同步</div><div class="line">CLIENT LIST  客户端列表</div><div class="line">CLIENT KILL  关闭某个客户端</div><div class="line">CLIENT SETNAME 为客户端设置名字</div><div class="line">CLIENT GETNAME 获取客户端名字</div><div class="line"></div><div class="line">1: 内存</div><div class="line"># Memory</div><div class="line">used_memory:859192 数据结构的空间</div><div class="line">used_memory_rss:7634944 实占空间</div><div class="line">mem_fragmentation_ratio:8.89 前2者的比例,1.N为佳</div><div class="line">2: 主从复制</div><div class="line"># Replication</div><div class="line">role:slave</div><div class="line">master_host:192.168.1.128</div><div class="line">master_port:6379</div><div class="line">aster_link_status:up</div><div class="line"></div><div class="line">3:持久化</div><div class="line"># Persistence</div><div class="line">rdb_changes_since_last_save:0</div><div class="line">rdb_last_save_time:1375224063</div><div class="line"></div><div class="line">4: fork耗时</div><div class="line">#Status</div><div class="line">latest_fork_usec:936  上次持久化花费微秒</div><div class="line"></div><div class="line">5: 慢日志</div><div class="line">config get/set slowlog-log-slower-than</div><div class="line">ONFIG get/SET slowlog-max-len </div><div class="line">slow log get 获取慢日志</div><div class="line"></div><div class="line">运行时更改master-slave</div><div class="line">修改一台slave(设为A)为new master </div><div class="line">1)命令该服务不做其他redis服务的slave </div><div class="line">   命令: slaveof no one </div><div class="line">2)修改其readonly为yes</div><div class="line"></div><div class="line">其他的slave再指向new master A</div><div class="line">1)命令该服务为new master A的slave</div><div class="line">命令格式 slaveof IP port</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"># redis</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/16/kafka简介/" rel="next" title="kafka简介">
+                <i class="fa fa-chevron-left"></i> kafka简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/melo.png"
+               alt="melo" />
+          <p class="site-author-name" itemprop="name">melo</p>
+          <p class="site-description motion-element" itemprop="description">没有岩石的阻挡怎能击起美丽的浪花</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-key的操作"><span class="nav-number">1.</span> <span class="nav-text">redis key的操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-string"><span class="nav-number">2.</span> <span class="nav-text">redis string</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-list"><span class="nav-number">3.</span> <span class="nav-text">redis list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-set"><span class="nav-number">4.</span> <span class="nav-text">redis set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-sorted-set"><span class="nav-number">5.</span> <span class="nav-text">redis sorted set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-hash"><span class="nav-number">6.</span> <span class="nav-text">redis hash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis事务"><span class="nav-number">7.</span> <span class="nav-text">redis事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis消息发布与订阅"><span class="nav-number">8.</span> <span class="nav-text">redis消息发布与订阅</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis持久化"><span class="nav-number">9.</span> <span class="nav-text">redis持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rdb的工作原理和配置"><span class="nav-number">9.1.</span> <span class="nav-text">rdb的工作原理和配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#aof的工作原理和配置"><span class="nav-number">9.2.</span> <span class="nav-text">aof的工作原理和配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis集群"><span class="nav-number">10.</span> <span class="nav-text">redis集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">11.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis主从复制的缺陷"><span class="nav-number">12.</span> <span class="nav-text">redis主从复制的缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis运维相关命令"><span class="nav-number">13.</span> <span class="nav-text">redis运维相关命令</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">melo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
