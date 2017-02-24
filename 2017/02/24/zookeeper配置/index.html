@@ -418,6 +418,8 @@
 <li><p>服务器名称与地址：<br>集群信息（服务器编号，服务器地址，LF通信端口，选举端口）<br>这个配置项的书写格式比较特殊，规则如下：  </p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">server.N = YYY:A:B </div><div class="line">server<span class="number">.1</span> = test<span class="bullet">-05</span>:<span class="number">2888</span>:<span class="number">3888</span>  </div><div class="line">server<span class="number">.2</span> = test<span class="bullet">-06</span>:<span class="number">2888</span>:<span class="number">3888</span>  </div><div class="line">server<span class="number">.3</span> = test<span class="bullet">-07</span>:<span class="number">2888</span>:<span class="number">3888</span></div></pre></td></tr></table></figure>
 </li>
+<li><p>myid<br>在data目录下创建myid文件,写入id号</p>
+</li>
 </ol>
 <p><img src="http://i.imgur.com/ATAXDlI.png" alt=""></p>
 
