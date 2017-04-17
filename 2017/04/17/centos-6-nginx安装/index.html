@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="zookeeper," />
+  <meta name="keywords" content="nginx," />
 
 
 
@@ -105,20 +105,16 @@
 
 
 
-<meta name="description" content="ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服务，是Google的Chubby一个开源的实现，是Hadoop和Hbase的重要组件。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、域名服务、分布式同步、组服务等。">
+<meta name="description" content="centos 6.*下安装nginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="zookeeper配置">
-<meta property="og:url" content="http://yoursite.com/2017/02/24/zookeeper配置/index.html">
+<meta property="og:title" content="centos 6 nginx安装">
+<meta property="og:url" content="http://yoursite.com/2017/04/17/centos-6-nginx安装/index.html">
 <meta property="og:site_name" content="朱佳东的个人博客">
-<meta property="og:description" content="ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服务，是Google的Chubby一个开源的实现，是Hadoop和Hbase的重要组件。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、域名服务、分布式同步、组服务等。">
-<meta property="og:image" content="http://i.imgur.com/peskoiH.png">
-<meta property="og:image" content="http://i.imgur.com/yKMfgT9.png">
-<meta property="og:image" content="http://i.imgur.com/ATAXDlI.png">
-<meta property="og:updated_time" content="2017-02-24T10:41:16.000Z">
+<meta property="og:description" content="centos 6.*下安装nginx">
+<meta property="og:updated_time" content="2017-04-17T10:35:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zookeeper配置">
-<meta name="twitter:description" content="ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服务，是Google的Chubby一个开源的实现，是Hadoop和Hbase的重要组件。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、域名服务、分布式同步、组服务等。">
-<meta name="twitter:image" content="http://i.imgur.com/peskoiH.png">
+<meta name="twitter:title" content="centos 6 nginx安装">
+<meta name="twitter:description" content="centos 6.*下安装nginx">
 
 
 
@@ -146,13 +142,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/02/24/zookeeper配置/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/04/17/centos-6-nginx安装/"/>
 
 
 
 
 
-  <title> zookeeper配置 | 朱佳东的个人博客 </title>
+  <title> centos 6 nginx安装 | 朱佳东的个人博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -289,7 +285,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/24/zookeeper配置/">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/17/centos-6-nginx安装/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="melo">
@@ -313,7 +309,7 @@
             
             
               
-                zookeeper配置
+                centos 6 nginx安装
               
             
           </h1>
@@ -328,8 +324,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-24T18:41:16+08:00">
-                2017-02-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-17T10:35:47Z">
+                2017-04-17
               </time>
             
 
@@ -351,19 +347,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/BigData/" itemprop="url" rel="index">
-                    <span itemprop="name">BigData</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/BigData/zookeeper/" itemprop="url" rel="index">
-                    <span itemprop="name">zookeeper</span>
+                  <a href="/categories/nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">nginx</span>
                   </a>
                 </span>
 
@@ -398,30 +383,14 @@
 
       
         <blockquote>
-<p>ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服务，是Google的Chubby一个开源的实现，是Hadoop和Hbase的重要组件。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、域名服务、分布式同步、组服务等。</p>
+<p>centos 6.*下安装nginx</p>
 </blockquote>
 <a id="more"></a>
-<h3 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a><font color="green">Zookeeper</font></h3><p>Zookerpeer集群数量为奇数，理论上认为一半以上的机器存活，则集群能正常工作。<br><img src="http://i.imgur.com/peskoiH.png" alt="">    </p>
-<p><img src="http://i.imgur.com/yKMfgT9.png" alt=""></p>
-<p>zookeeper的默认配置文件为zookeeper/conf/zoo_sample.cfg，需要将其修改为zoo.cfg。其中各配置项的含义，解释如下：</p>
-<ol>
-<li><p>tickTime<br>CS通信心跳时间<br>Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送一个心跳。tickTime以毫秒为单位。<br>tickTime=2000  </p>
-</li>
-<li><p>initLimit：<br>LF初始通信时限(leader follower)<br>集群中的follower服务器(F)与leader服务器(L)之间初始连接时能容忍的最多心跳数（tickTime的数量）。<br>initLimit=5  </p>
-</li>
-<li><p>syncLimit：<br>LF同步通信时限<br>集群中的follower服务器与leader服务器之间请求和应答之间能容忍的最多心跳数（tickTime的数量）。<br>syncLimit=2  </p>
-</li>
-<li><p>dataDir：<br>数据文件目录<br>Zookeeper保存数据的目录，默认情况下，Zookeeper将写数据的日志文件也保存在这个目录里。<br>dataDir=/home/zhujiadong//zookeeper/data  </p>
-</li>
-<li><p>clientPort：<br>客户端连接端口<br>客户端连接 Zookeeper 服务器的端口，Zookeeper 会监听这个端口，接受客户端的访问请求。<br>clientPort=2181 </p>
-</li>
-<li><p>服务器名称与地址：<br>集群信息（服务器编号，服务器地址，LF通信端口，选举端口）<br>这个配置项的书写格式比较特殊，规则如下：  </p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">server.N = YYY:A:B </div><div class="line">server<span class="number">.1</span> = test<span class="bullet">-05</span>:<span class="number">2888</span>:<span class="number">3888</span>  </div><div class="line">server<span class="number">.2</span> = test<span class="bullet">-06</span>:<span class="number">2888</span>:<span class="number">3888</span>  </div><div class="line">server<span class="number">.3</span> = test<span class="bullet">-07</span>:<span class="number">2888</span>:<span class="number">3888</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>myid<br>在data目录下创建myid文件,写入id号</p>
-</li>
-</ol>
-<p><img src="http://i.imgur.com/ATAXDlI.png" alt=""></p>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a><font color="green">准备工作</font></h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install -y gcc</div><div class="line">yum install -y pcre pcre-devel  </div><div class="line">yum install -y zlib zlib-devel  </div><div class="line">yum install -y openssl openssl-devel</div></pre></td></tr></table></figure>
+<h3 id="下载并安装"><a href="#下载并安装" class="headerlink" title="下载并安装"></a><font color="green">下载并安装</font></h3><p><a><a href="http://nginx.org/download/" target="_blank" rel="external">http://nginx.org/download/</a></a><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">wget http://nginx.org/download/nginx-1.7.3.tar.gz  </div><div class="line">tar xzf nginx-1.7.3.tar.gz   </div><div class="line"><span class="built_in">cd</span> nginx-1.7.3  </div><div class="line">./configure  </div><div class="line">make  </div><div class="line">make install  </div><div class="line">whereis nginx  </div><div class="line">nginx: /usr/<span class="built_in">local</span>/nginx</div></pre></td></tr></table></figure></p>
+<p>到此nginx已经安装好了,在/usr/local/nginx/下</p>
+<h3 id="添加到系统服务"><a href="#添加到系统服务" class="headerlink" title="添加到系统服务"></a><font color="green">添加到系统服务</font></h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">vim /etc/init.d/nginx</div><div class="line"></div><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="comment"># chkconfig: 2345 85 15  </span></div><div class="line"><span class="comment"># Startup script for the nginx Web Server  </span></div><div class="line"><span class="comment"># description: nginx is a World Wide Web server.   </span></div><div class="line"><span class="comment"># It is used to serve HTML files and CGI.  </span></div><div class="line"><span class="comment"># processname: nginx  </span></div><div class="line"><span class="comment"># pidfile: /usr/local/nginx/logs/nginx.pid  </span></div><div class="line"><span class="comment"># config: /usr/local/nginx/conf/nginx.conf  </span></div><div class="line">  </div><div class="line">PATH=/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/sbin:/bin:/usr/sbin:/usr/bin  </div><div class="line">DESC=<span class="string">"nginx deamon"</span>  </div><div class="line">NAME=nginx  </div><div class="line">DAEMON=/usr/<span class="built_in">local</span>/nginx/sbin/<span class="variable">$NAME</span>  </div><div class="line">SCRIPTNAME=/etc/init.d/<span class="variable">$NAME</span>  </div><div class="line">  </div><div class="line"><span class="built_in">test</span> -x <span class="variable">$DAEMON</span> || <span class="built_in">exit</span> 0  </div><div class="line">  </div><div class="line"><span class="function"><span class="title">d_start</span></span>()&#123;  </div><div class="line">  <span class="variable">$DAEMON</span> || <span class="built_in">echo</span> -n <span class="string">"already running"</span>  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line"><span class="function"><span class="title">d_stop</span></span>()&#123;  </div><div class="line">  <span class="variable">$DAEMON</span> <span class="_">-s</span> quit || <span class="built_in">echo</span> -n <span class="string">"not running"</span>  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line">  </div><div class="line"><span class="function"><span class="title">d_reload</span></span>()&#123;  </div><div class="line">  <span class="variable">$DAEMON</span> <span class="_">-s</span> reload || <span class="built_in">echo</span> -n <span class="string">"can not reload"</span>  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span>  </div><div class="line">start)  </div><div class="line">  <span class="built_in">echo</span> -n <span class="string">"Starting <span class="variable">$DESC</span>: <span class="variable">$NAME</span>"</span>  </div><div class="line">  d_start  </div><div class="line">  <span class="built_in">echo</span> <span class="string">"."</span>  </div><div class="line">;;  </div><div class="line">stop)  </div><div class="line">  <span class="built_in">echo</span> -n <span class="string">"Stopping <span class="variable">$DESC</span>: <span class="variable">$NAME</span>"</span>  </div><div class="line">  d_stop  </div><div class="line">  <span class="built_in">echo</span> <span class="string">"."</span>  </div><div class="line">;;  </div><div class="line">reload)  </div><div class="line">  <span class="built_in">echo</span> -n <span class="string">"Reloading <span class="variable">$DESC</span> conf..."</span>  </div><div class="line">  d_reload  </div><div class="line">  <span class="built_in">echo</span> <span class="string">"reload ."</span>  </div><div class="line">;;  </div><div class="line">restart)  </div><div class="line">  <span class="built_in">echo</span> -n <span class="string">"Restarting <span class="variable">$DESC</span>: <span class="variable">$NAME</span>"</span>  </div><div class="line">  d_stop  </div><div class="line">  sleep 2  </div><div class="line">  d_start  </div><div class="line">  <span class="built_in">echo</span> <span class="string">"."</span>  </div><div class="line">;;  </div><div class="line">*)  </div><div class="line">  <span class="built_in">echo</span> <span class="string">"Usage: <span class="variable">$ScRIPTNAME</span> &#123;start|stop|reload|restart&#125;"</span> &gt;&amp;2  </div><div class="line">  <span class="built_in">exit</span> 3  </div><div class="line">;;  </div><div class="line"><span class="keyword">esac</span>  </div><div class="line">  </div><div class="line"><span class="built_in">exit</span> 0  </div><div class="line"></div><div class="line">chmod +x /etc/init.d/nginx  </div><div class="line">chkconfig --add nginx  </div><div class="line">chkconfig nginx on/off  </div><div class="line">chkconfig --list nginx  </div><div class="line">nginx 0:off 1:off 2:on 3:on 4:on 5:on 6:off</div></pre></td></tr></table></figure>
+<p>此时nginx被设置为开机自启动和系统服务了,即可以通过service的方式启动nginx<br>配置文件在/usr/local/nginx/conf/下</p>
 
       
     </div>
@@ -445,7 +414,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/zookeeper/" rel="tag"># zookeeper</a>
+            <a href="/tags/nginx/" rel="tag"># nginx</a>
           
         </div>
       
@@ -458,8 +427,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/02/23/vim配置/" rel="next" title="vim配置">
-                <i class="fa fa-chevron-left"></i> vim配置
+              <a href="/2017/04/08/mongodb基本介绍/" rel="next" title="mongodb基本介绍">
+                <i class="fa fa-chevron-left"></i> mongodb基本介绍
               </a>
             
           </div>
@@ -467,10 +436,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/04/08/mongodb基本介绍/" rel="prev" title="mongodb基本介绍">
-                mongodb基本介绍 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -593,7 +558,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper"><span class="nav-number">1.</span> <span class="nav-text">Zookeeper</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载并安装"><span class="nav-number">2.</span> <span class="nav-text">下载并安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加到系统服务"><span class="nav-number">3.</span> <span class="nav-text">添加到系统服务</span></a></li></ol></div>
             
 
           </div>
